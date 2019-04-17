@@ -49,12 +49,13 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 			if skipper != nil && skipper(c, rw, req) {
 				return next(c, rw, req)
 			}
-			origin := req.Header.Get(HeaderOrigin)
+
 			// Check allowed origins
+			origin := req.Header.Get(HeaderOrigin)
 			allowedOrigin, _ := om.FindMatchedOrigin(conf.AllowOrigins, origin)
 
-			// Simple request
 			if req.Method != http.MethodOptions {
+				// handle normal requests
 				rw.Header().Add(HeaderVary, HeaderOrigin)
 				rw.Header().Set(HeaderAccessControlAllowOrigin, allowedOrigin)
 				if conf.AllowCredentials && allowedOrigin != "*" && allowedOrigin != "" {
@@ -65,7 +66,8 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 				}
 				return next(c, rw, req)
 			}
-			// Preflight request
+
+			// handle preflight requests
 			rw.Header().Add(HeaderVary, HeaderOrigin)
 			rw.Header().Add(HeaderVary, HeaderAccessControlRequestMethod)
 			rw.Header().Add(HeaderVary, HeaderAccessControlRequestHeaders)
