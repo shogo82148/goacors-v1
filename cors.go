@@ -50,43 +50,45 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 				return next(c, rw, req)
 			}
 
+			h := rw.Header()
+
 			// Check allowed origins
 			origin := req.Header.Get(HeaderOrigin)
 			allowedOrigin, _ := om.FindMatchedOrigin(conf.AllowOrigins, origin)
 
 			if req.Method != http.MethodOptions {
 				// handle normal requests
-				rw.Header().Add(HeaderVary, HeaderOrigin)
-				rw.Header().Set(HeaderAccessControlAllowOrigin, allowedOrigin)
+				h.Add(HeaderVary, HeaderOrigin)
+				h.Set(HeaderAccessControlAllowOrigin, allowedOrigin)
 				if conf.AllowCredentials && allowedOrigin != "*" && allowedOrigin != "" {
-					rw.Header().Set(HeaderAccessControlAllowCredentials, "true")
+					h.Set(HeaderAccessControlAllowCredentials, "true")
 				}
 				if exposeHeaders != "" {
-					rw.Header().Set(HeaderAccessControlExposeHeaders, exposeHeaders)
+					h.Set(HeaderAccessControlExposeHeaders, exposeHeaders)
 				}
 				return next(c, rw, req)
 			}
 
 			// handle preflight requests
-			rw.Header().Add(HeaderVary, HeaderOrigin)
-			rw.Header().Add(HeaderVary, HeaderAccessControlRequestMethod)
-			rw.Header().Add(HeaderVary, HeaderAccessControlRequestHeaders)
-			rw.Header().Set(HeaderAccessControlAllowOrigin, allowedOrigin)
-			rw.Header().Set(HeaderAccessControlAllowMethods, allowMethods)
+			h.Add(HeaderVary, HeaderOrigin)
+			h.Add(HeaderVary, HeaderAccessControlRequestMethod)
+			h.Add(HeaderVary, HeaderAccessControlRequestHeaders)
+			h.Set(HeaderAccessControlAllowOrigin, allowedOrigin)
+			h.Set(HeaderAccessControlAllowMethods, allowMethods)
 			if conf.AllowCredentials && allowedOrigin != "*" && allowedOrigin != "" {
-				rw.Header().Set(HeaderAccessControlAllowCredentials, "true")
+				h.Set(HeaderAccessControlAllowCredentials, "true")
 			}
 			if allowHeaders != "" {
-				rw.Header().Set(HeaderAccessControlAllowHeaders, allowHeaders)
+				h.Set(HeaderAccessControlAllowHeaders, allowHeaders)
 			} else {
 				header := req.Header.Get(HeaderAccessControlRequestHeaders)
 				if header != "" {
-					rw.Header().Set(HeaderAccessControlAllowHeaders, header)
+					h.Set(HeaderAccessControlAllowHeaders, header)
 				}
 			}
 
 			if maxAge != "" {
-				rw.Header().Set(HeaderAccessControlMaxAge, maxAge)
+				h.Set(HeaderAccessControlMaxAge, maxAge)
 			}
 			rw.WriteHeader(http.StatusNoContent)
 			return nil
