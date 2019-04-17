@@ -15,7 +15,7 @@ func New(service *goa.Service) goa.Middleware {
 }
 
 // WithConfig create middleware with configure for this
-func WithConfig(service *goa.Service, conf *GoaCORSConfig) goa.Middleware {
+func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 	if conf == nil {
 		conf = DefaultConfig
 	}

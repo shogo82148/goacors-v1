@@ -18,7 +18,7 @@ func TestOriginAllowsSuccessUsingInterMediateMatcherButCompletelySame(t *testing
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			"http://somesite.someorigin.com",
 		},
@@ -45,7 +45,7 @@ func TestOriginAllowsSubDomainWildcard(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			"http://*.someorigin.com",
 		},
@@ -73,7 +73,7 @@ func TestOriginNotAllowsSubDomainWildcardFailSuffix(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			"http://*.someorigin.com",
 		},
@@ -101,7 +101,7 @@ func TestOriginNotAllowsSubDomainWildcardFailPrefix(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			"http://notmatch-*.someorigin.com",
 		},
@@ -129,7 +129,7 @@ func TestOriginNotAllowsSubDomainWildcardFailNoWildCard(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			"http://notmatch.someorigin.com",
 		},
@@ -157,7 +157,7 @@ func TestOriginNotAllowsSubDomainWildcardFailWhenSchemaNotSame(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			"http://*.someorigin.com",
 		},
@@ -185,7 +185,7 @@ func TestOriginNotAllowsSubDomainWildcardFailForInvalidPath(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			"http://*.someorigin.com",
 		},
@@ -213,7 +213,7 @@ func TestOriginNotAllowsSubDomainWildcardFailWithInvalidOriginURL(t *testing.T) 
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			"http://someorigin.com",
 		},
@@ -246,7 +246,7 @@ func TestOriginNotAllowsSubDomainWildcardFailWithInvalidAllowOriginURL(t *testin
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			":",
 		},
@@ -268,7 +268,7 @@ func TestOriginNotAllowsSubDomainSuccessWithMultipleAllowOrigin(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins: []string{
 			"http://sample01*.domain.com",
 			"http://sample02*.domain.com",

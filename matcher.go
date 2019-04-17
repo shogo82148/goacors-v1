@@ -15,11 +15,11 @@ type OriginMatcher interface {
 
 // StrictOriginMatcher marker for doing strict check
 type StrictOriginMatcher struct {
-	config *GoaCORSConfig
+	config *Config
 }
 
 // newStrictOriginMatcher create new OriginMatcher implement
-func newStrictOriginMatcher(config *GoaCORSConfig) OriginMatcher {
+func newStrictOriginMatcher(config *Config) OriginMatcher {
 	return &StrictOriginMatcher{config}
 }
 
@@ -48,11 +48,11 @@ var innerMatcher = func(allowedOrigin string, origin string, allowCredentials bo
 // InterMediateMatcher allows subdomain wildcard
 type InterMediateMatcher struct {
 	baseMatcher
-	config *GoaCORSConfig
+	config *Config
 }
 
 // newInterMediateMatcher create new OriginMatcher implement
-func newInterMediateMatcher(config *GoaCORSConfig) OriginMatcher {
+func newInterMediateMatcher(config *Config) OriginMatcher {
 	// notify this matcher has weakness for security
 	goa.LogInfo(context.Background(), "!!!warning!!! you'll use intermediate match mode! note that using this mode is not recommended for production!")
 	return &InterMediateMatcher{

@@ -59,7 +59,7 @@ func TestNeitherOriginHeaderAndAllowOriginGiven(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowCredentials: true,
 	})(h)
 	err := testee(ctx, rw, req)
@@ -83,7 +83,7 @@ func TestEmptyOriginHeader(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowCredentials: true,
 	})(h)
 	err := testee(ctx, rw, req)
@@ -107,7 +107,7 @@ func TestOriginAllowsWildcard(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowCredentials: true,
 	})(h)
 	err := testee(ctx, rw, req)
@@ -131,7 +131,7 @@ func TestOrigIsNotValid(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowCredentials: true,
 		AllowOrigins:     []string{"http://example.com"},
 	})(h)
@@ -157,7 +157,7 @@ func TestOriginAllowsFixedOrigin(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins:     []string{fixedOrigin},
 		ExposeHeaders:    []string{"ETag"},
 		AllowCredentials: true,
@@ -190,7 +190,7 @@ func TestPreflightRequet(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins:     []string{fixedOrigin},
 		MaxAge:           3600,
 		AllowCredentials: true,
@@ -240,7 +240,7 @@ func TestNotGivenAllowHeaderOnRequest(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowCredentials: true,
 		AllowOrigins:     []string{"example.com"},
 	})(h)
@@ -265,7 +265,7 @@ func TestExecuteWithSkipper(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		Skipper: func(c context.Context, rw http.ResponseWriter, req *http.Request) bool {
 			return true
 		},
@@ -295,7 +295,7 @@ func TestRequestGetWithOrigin(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins:     []string{fixedOrigin},
 		AllowCredentials: true,
 	})(h)
@@ -320,7 +320,7 @@ func TestAddedAllowOrigHeader(t *testing.T) {
 	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
-	testee := goacors.WithConfig(service, &goacors.GoaCORSConfig{
+	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowCredentials: true,
 		AllowHeaders:     []string{"X-OrigHeader"},
 	})(h)

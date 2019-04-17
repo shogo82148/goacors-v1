@@ -51,8 +51,6 @@ type Config struct {
 	MaxAge           int
 }
 
-type GoaCORSConfig = Config
-
 // DefaultConfig is the default CORS middleware config.
 var DefaultConfig = &Config{
 	Skipper:        defaultSkipper,
