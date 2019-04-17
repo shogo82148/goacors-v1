@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/deadcheat/goacors"
+	"github.com/shogo82148/goacors"
 )
 
 func TestOriginAllowsSuccessUsingInterMediateMatcherButCompletelySame(t *testing.T) {
