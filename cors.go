@@ -2,6 +2,7 @@ package goacors
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -33,9 +34,12 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 	switch conf.DomainStrategy {
 	case AllowIntermediateMatch:
 		om = newInterMediateMatcher(conf)
-	default:
+	case AllowStrict:
 		om = newStrictOriginMatcher(conf)
+	default:
+		panic(fmt.Errorf("goacors: invalid domain strategy: %d", conf.DomainStrategy))
 	}
+
 	return func(next goa.Handler) goa.Handler {
 		return func(c context.Context, rw http.ResponseWriter, req *http.Request) error {
 			// Skipper
