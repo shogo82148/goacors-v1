@@ -39,6 +39,10 @@ const (
 	AllowIntermediateMatch
 )
 
+// Skipper defines a function to skip middleware. Returning true skips processing
+// the middleware.
+type Skipper func(c context.Context, rw http.ResponseWriter, req *http.Request) bool
+
 // Config is a config for the CORS middleware.
 type Config struct {
 	// Skipper defines a function to skip middleware.
@@ -75,12 +79,4 @@ type Config struct {
 	// can be cached.
 	// The default value is 0, the preflight request can not be cached.
 	MaxAge int
-}
-
-// DefaultConfig is the default CORS middleware config.
-var DefaultConfig = &Config{
-	Skipper:        defaultSkipper,
-	AllowOrigins:   []string{"*"},
-	AllowMethods:   []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
-	DomainStrategy: AllowStrict,
 }
