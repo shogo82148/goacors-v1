@@ -1,6 +1,7 @@
 package goacors
 
 import (
+	"context"
 	"net/http"
 )
 
@@ -29,32 +30,42 @@ const (
 	HeaderContentType = "Content-Type"
 )
 
-// DomainStrategy defined identify how handle (judge match with origin or not) domain
-type DomainStrategy int
+// Skipper defines a function to skip middleware. Returning true skips processing
+// the middleware.
+type Skipper func(c context.Context, rw http.ResponseWriter, req *http.Request) bool
 
-const (
-	// AllowStrict strict mode (completely same origin or wild card or null)
-	AllowStrict DomainStrategy = iota
-	// AllowIntermediateMatch intermediate-match (such as subdomain like '*.example.com')
-	AllowIntermediateMatch
-)
+// Config is a config for the CORS middleware.
+type Config struct {
+	// Skipper defines a function to skip middleware.
+	Skipper Skipper
 
-// GoaCORSConfig CORSチェック用のConfig
-type GoaCORSConfig struct {
-	Skipper
-	DomainStrategy
-	AllowOrigins     []string
-	AllowMethods     []string
-	AllowHeaders     []string
+	// AllowOrigin defines a list of origins that may access the resource.
+	// Default value is an empty list, any origin can not access.
+	AllowOrigins []string
+
+	// AllowMethods defines a list methods allowed when accessing the resource.
+	// This is used in response to a preflight request.
+	// Default value is an empty list, any method is not allowed.
+	AllowMethods []string
+
+	// AllowHeaders defines a list of request headers that can be used when
+	// making the actual request. This in response to a preflight request.
+	AllowHeaders []string
+
+	// AllowCredentials indicates whether or not the response to the request
+	// can be exposed when the credentials flag is true. When used as part of
+	// a response to a preflight request, this indicates whether or not the
+	// actual request can be made using credentials.
+	// Default value is false.
 	AllowCredentials bool
-	ExposeHeaders    []string
-	MaxAge           int
-}
 
-// DefaultGoaCORSConfig is the default CORS middleware config.
-var DefaultGoaCORSConfig = GoaCORSConfig{
-	Skipper:        defaultSkipper,
-	AllowOrigins:   []string{"*"},
-	AllowMethods:   []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
-	DomainStrategy: AllowStrict,
+	// ExposeHeaders defines a whitelist headers that clients are allowed to
+	// access.
+	// Default value is an empty list.
+	ExposeHeaders []string
+
+	// MaxAge indicates how long (in seconds) the results of a preflight request
+	// can be cached.
+	// The default value is 0, the preflight request can not be cached.
+	MaxAge int
 }
