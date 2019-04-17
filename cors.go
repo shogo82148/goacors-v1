@@ -9,17 +9,8 @@ import (
 	"github.com/goadesign/goa"
 )
 
-// New return middleware implements checking cors with default config
-func New(service *goa.Service) goa.Middleware {
-	return WithConfig(service, nil)
-}
-
-// WithConfig create middleware with configure for this
-func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
-	if conf == nil {
-		conf = &Config{}
-	}
-
+// New creates middleware with configure for this
+func New(service *goa.Service, conf *Config) goa.Middleware {
 	skipper := conf.Skipper
 	allowOrigins := make([]string, len(conf.AllowOrigins))
 	copy(allowOrigins, conf.AllowOrigins)
