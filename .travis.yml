@@ -1,15 +1,16 @@
 language: go
+env:
+  - GO111MODULE=on
 go:
-    - "1.10"
-    - "1.11"
+    - "1.12.x"
+    - "tip"
+env:
+    GO111MODULE=on
 go_import_path: github.com/shogo82148/goacors
 before_install:
     - go get -v -u github.com/modocache/gover
     - go get -v -u github.com/mattn/goveralls
     - go get -v -u golang.org/x/tools/cmd/cover
-    - go get -v -u github.com/Masterminds/glide
-install:
-    - $GOPATH/bin/glide install
 script:
     - go test -coverprofile=goacors.coverprofile
     - $HOME/gopath/bin/gover

@@ -6,7 +6,7 @@ a cors-header middleware for goa(https://github.com/goadesign/goa).
 This is a fork of https://github.com/istyle-inc/goacors
 
 # how to use
-1. first, import this from glide, or `go get github.com/shogo82148/goacors`
+1. `go get github.com/shogo82148/goacors`
 2. write your main.go generated automatically from goagen.
 
 	```

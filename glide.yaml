@@ -1,4 +1,0 @@
-package: github.com/shogo82148/goacors
-import:
-- package: github.com/goadesign/goa
-  version: ^1.3.1
