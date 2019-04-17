@@ -66,8 +66,7 @@ func newInterMediateMatcher(config *Config) OriginMatcher {
 // first of all, this method will be panic when couldn't parse pre-set allowed origin url.
 // second, wild card is enabled only in their host name
 func (i *InterMediateMatcher) FindMatchedOrigin(allowedOrigins []string, origin string) (foundOne string, found bool) {
-
-	originUrl, err := url.Parse(origin)
+	originURL, err := url.Parse(origin)
 	if err != nil {
 		return "", false
 	}
@@ -83,11 +82,11 @@ func (i *InterMediateMatcher) FindMatchedOrigin(allowedOrigins []string, origin 
 			continue
 		}
 		parts := strings.SplitN(allowedURL.Host, "*", 2)
-		if !strings.HasPrefix(originUrl.Host, parts[0]) ||
+		if !strings.HasPrefix(originURL.Host, parts[0]) ||
 			!strings.HasSuffix(origin, parts[1]) ||
-			originUrl.Scheme != allowedURL.Scheme ||
-			originUrl.Path != allowedURL.Path ||
-			originUrl.RawQuery != allowedURL.RawQuery {
+			originURL.Scheme != allowedURL.Scheme ||
+			originURL.Path != allowedURL.Path ||
+			originURL.RawQuery != allowedURL.RawQuery {
 			continue
 		}
 		// return origin, true
