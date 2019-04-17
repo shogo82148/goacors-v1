@@ -26,8 +26,8 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 		conf.AllowOrigins = DefaultConfig.AllowOrigins
 	}
 	allowMethods := strings.Join(conf.AllowMethods, ", ")
-	allowHeaders := strings.Join(conf.AllowHeaders, ",")
-	exposeHeaders := strings.Join(conf.ExposeHeaders, ",")
+	allowHeaders := strings.Join(conf.AllowHeaders, ", ")
+	exposeHeaders := strings.Join(conf.ExposeHeaders, ", ")
 	var maxAge string
 	if conf.MaxAge > 0 {
 		maxAge = strconv.Itoa(conf.MaxAge)
