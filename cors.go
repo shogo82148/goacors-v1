@@ -11,22 +11,22 @@ import (
 
 // New return middleware implements checking cors with default config
 func New(service *goa.Service) goa.Middleware {
-	return WithConfig(service, &DefaultGoaCORSConfig)
+	return WithConfig(service, nil)
 }
 
 // WithConfig create middleware with configure for this
 func WithConfig(service *goa.Service, conf *GoaCORSConfig) goa.Middleware {
 	if conf == nil {
-		conf = &DefaultGoaCORSConfig
+		conf = DefaultConfig
 	}
 	if conf.Skipper == nil {
-		conf.Skipper = DefaultGoaCORSConfig.Skipper
+		conf.Skipper = DefaultConfig.Skipper
 	}
 	if len(conf.AllowOrigins) == 0 {
-		conf.AllowOrigins = DefaultGoaCORSConfig.AllowOrigins
+		conf.AllowOrigins = DefaultConfig.AllowOrigins
 	}
 	if len(conf.AllowMethods) == 0 {
-		conf.AllowMethods = DefaultGoaCORSConfig.AllowMethods
+		conf.AllowMethods = DefaultConfig.AllowMethods
 	}
 	if conf.DomainStrategy != AllowIntermediateMatch {
 		conf.DomainStrategy = AllowStrict

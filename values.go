@@ -39,10 +39,10 @@ const (
 	AllowIntermediateMatch
 )
 
-// GoaCORSConfig CORSチェック用のConfig
-type GoaCORSConfig struct {
-	Skipper
-	DomainStrategy
+// Config is a config for the CORS middleware.
+type Config struct {
+	Skipper          Skipper
+	DomainStrategy   DomainStrategy
 	AllowOrigins     []string
 	AllowMethods     []string
 	AllowHeaders     []string
@@ -51,8 +51,10 @@ type GoaCORSConfig struct {
 	MaxAge           int
 }
 
-// DefaultGoaCORSConfig is the default CORS middleware config.
-var DefaultGoaCORSConfig = GoaCORSConfig{
+type GoaCORSConfig = Config
+
+// DefaultConfig is the default CORS middleware config.
+var DefaultConfig = &Config{
 	Skipper:        defaultSkipper,
 	AllowOrigins:   []string{"*"},
 	AllowMethods:   []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
