@@ -192,6 +192,7 @@ func TestPreflightRequet(t *testing.T) {
 	}
 	testee := goacors.WithConfig(service, &goacors.Config{
 		AllowOrigins:     []string{fixedOrigin},
+		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
 		MaxAge:           3600,
 		AllowCredentials: true,
 	})(h)
@@ -204,9 +205,8 @@ func TestPreflightRequet(t *testing.T) {
 		t.Error("allow origin should be empty")
 		t.Fail()
 	}
-	if rw.Header().Get(goacors.HeaderAccessControlAllowMethods) != "GET,HEAD,PUT,PATCH,POST,DELETE" {
-		t.Error("allow method should be empty but ", rw.Header().Get(goacors.HeaderAccessControlAllowMethods))
-		t.Fail()
+	if rw.Header().Get(goacors.HeaderAccessControlAllowMethods) != "GET, HEAD, PUT, PATCH, POST, DELETE" {
+		t.Errorf("allow method should be %q but %q", "GET, HEAD, PUT, PATCH, POST, DELETE", rw.Header().Get(goacors.HeaderAccessControlAllowMethods))
 	}
 	if rw.Header().Get(goacors.HeaderAccessControlAllowCredentials) != "true" {
 		t.Error("allow credentials should be true")

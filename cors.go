@@ -24,13 +24,10 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 	if len(conf.AllowOrigins) == 0 {
 		conf.AllowOrigins = DefaultConfig.AllowOrigins
 	}
-	if len(conf.AllowMethods) == 0 {
-		conf.AllowMethods = DefaultConfig.AllowMethods
-	}
 	if conf.DomainStrategy != AllowIntermediateMatch {
 		conf.DomainStrategy = AllowStrict
 	}
-	allowMethods := strings.Join(conf.AllowMethods, ",")
+	allowMethods := strings.Join(conf.AllowMethods, ", ")
 	allowHeaders := strings.Join(conf.AllowHeaders, ",")
 	exposeHeaders := strings.Join(conf.ExposeHeaders, ",")
 	maxAge := strconv.Itoa(conf.MaxAge)
