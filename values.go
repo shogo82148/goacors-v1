@@ -41,14 +41,40 @@ const (
 
 // Config is a config for the CORS middleware.
 type Config struct {
-	Skipper          Skipper
-	DomainStrategy   DomainStrategy
-	AllowOrigins     []string
-	AllowMethods     []string
-	AllowHeaders     []string
+	// Skipper defines a function to skip middleware.
+	Skipper Skipper
+
+	DomainStrategy DomainStrategy
+
+	// AllowOrigin defines a list of origins that may access the resource.
+	// Default value is an empty list, any origin can not access.
+	AllowOrigins []string
+
+	// AllowMethods defines a list methods allowed when accessing the resource.
+	// This is used in response to a preflight request.
+	// Default value is an empty list, any method is not allowed.
+	AllowMethods []string
+
+	// AllowHeaders defines a list of request headers that can be used when
+	// making the actual request. This in response to a preflight request.
+	AllowHeaders []string
+
+	// AllowCredentials indicates whether or not the response to the request
+	// can be exposed when the credentials flag is true. When used as part of
+	// a response to a preflight request, this indicates whether or not the
+	// actual request can be made using credentials.
+	// Default value is false.
 	AllowCredentials bool
-	ExposeHeaders    []string
-	MaxAge           int
+
+	// ExposeHeaders defines a whitelist headers that clients are allowed to
+	// access.
+	// Default value is an empty list.
+	ExposeHeaders []string
+
+	// MaxAge indicates how long (in seconds) the results of a preflight request
+	// can be cached.
+	// The default value is 0, the preflight request can not be cached.
+	MaxAge int
 }
 
 // DefaultConfig is the default CORS middleware config.
