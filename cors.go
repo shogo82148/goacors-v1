@@ -28,7 +28,10 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 	allowMethods := strings.Join(conf.AllowMethods, ", ")
 	allowHeaders := strings.Join(conf.AllowHeaders, ",")
 	exposeHeaders := strings.Join(conf.ExposeHeaders, ",")
-	maxAge := strconv.Itoa(conf.MaxAge)
+	var maxAge string
+	if conf.MaxAge > 0 {
+		maxAge = strconv.Itoa(conf.MaxAge)
+	}
 
 	var om OriginMatcher
 	switch conf.DomainStrategy {
@@ -80,7 +83,7 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 				}
 			}
 
-			if conf.MaxAge > 0 {
+			if maxAge != "" {
 				rw.Header().Set(HeaderAccessControlMaxAge, maxAge)
 			}
 			rw.WriteHeader(http.StatusNoContent)
