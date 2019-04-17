@@ -1,4 +1,4 @@
-module github.com/shogo82148/goacors
+module github.com/shogo82148/goacors/v2
 
 go 1.12
 
