@@ -61,7 +61,7 @@ func newInterMediateMatcher(config *Config) OriginMatcher {
 	}
 }
 
-// Filter returns ok and found one if wildcard matched with subdomain or completely same origin or entirely wildcard
+// FindMatchedOrigin returns ok and found one if wildcard matched with subdomain or completely same origin or entirely wildcard
 // ** Note **
 // first of all, this method will be panic when couldn't parse pre-set allowed origin url.
 // second, wild card is enabled only in their host name
