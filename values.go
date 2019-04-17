@@ -1,6 +1,7 @@
 package goacors
 
 import (
+	"context"
 	"net/http"
 )
 
@@ -29,16 +30,6 @@ const (
 	HeaderContentType = "Content-Type"
 )
 
-// DomainStrategy defined identify how handle (judge match with origin or not) domain
-type DomainStrategy int
-
-const (
-	// AllowStrict strict mode (completely same origin or wild card or null)
-	AllowStrict DomainStrategy = iota
-	// AllowIntermediateMatch intermediate-match (such as subdomain like '*.example.com')
-	AllowIntermediateMatch
-)
-
 // Skipper defines a function to skip middleware. Returning true skips processing
 // the middleware.
 type Skipper func(c context.Context, rw http.ResponseWriter, req *http.Request) bool
@@ -47,8 +38,6 @@ type Skipper func(c context.Context, rw http.ResponseWriter, req *http.Request) 
 type Config struct {
 	// Skipper defines a function to skip middleware.
 	Skipper Skipper
-
-	DomainStrategy DomainStrategy
 
 	// AllowOrigin defines a list of origins that may access the resource.
 	// Default value is an empty list, any origin can not access.
