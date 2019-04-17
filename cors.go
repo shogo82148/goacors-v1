@@ -19,9 +19,8 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 	if conf == nil {
 		conf = DefaultConfig
 	}
-	if conf.Skipper == nil {
-		conf.Skipper = DefaultConfig.Skipper
-	}
+
+	skipper := conf.Skipper
 	if len(conf.AllowOrigins) == 0 {
 		conf.AllowOrigins = DefaultConfig.AllowOrigins
 	}
@@ -46,7 +45,7 @@ func WithConfig(service *goa.Service, conf *Config) goa.Middleware {
 	return func(next goa.Handler) goa.Handler {
 		return func(c context.Context, rw http.ResponseWriter, req *http.Request) error {
 			// Skipper
-			if conf.Skipper(c, rw, req) {
+			if skipper != nil && skipper(c, rw, req) {
 				return next(c, rw, req)
 			}
 			origin := req.Header.Get(HeaderOrigin)
