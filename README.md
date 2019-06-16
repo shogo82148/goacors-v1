@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/shogo82148/goacors.svg?branch=master)](https://travis-ci.org/shogo82148/goacors)
+[![Build Status](https://travis-ci.com/shogo82148/goacors.svg?branch=master)](https://travis-ci.org/shogo82148/goacors)
 [![Coverage Status](https://coveralls.io/repos/github/shogo82148/goacors/badge.svg?branch=master&service=github)](https://coveralls.io/github/shogo82148/goacors?branch=master) [![GoDoc](https://godoc.org/github.com/shogo82148/goacors?status.svg)](https://godoc.org/github.com/shogo82148/goacors)  
 
 # goacors
