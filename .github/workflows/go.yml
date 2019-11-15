@@ -6,12 +6,16 @@ jobs:
   build:
     strategy:
       matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
         go:
           - "1.12"
           - "1.13"
 
-    name: Test Go ${{ matrix.go }}
-    runs-on: ubuntu-latest
+    name: Test Go ${{ matrix.go }} in ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     steps:
 
     - name: Set up Go ${{ matrix.go }}
