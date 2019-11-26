@@ -8,6 +8,28 @@ import (
 	"github.com/shogo82148/goacors/v2"
 )
 
+func TestNeitherOriginHeaderAndAllowOriginGiven(t *testing.T) {
+	service := newService(nil)
+	req, _ := http.NewRequest(http.MethodGet, "/", nil)
+	rw := newTestResponseWriter()
+	ctx := newContext(service, rw, req, nil)
+
+	h := func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		return service.Send(ctx, http.StatusOK, "ok")
+	}
+	testee := goacors.New(service, &goacors.Config{
+		AllowCredentials: true,
+		AllowOrigins:     []string{"*"},
+	})(h)
+	err := testee(ctx, rw, req)
+	if err != nil {
+		t.Error("it should not return any error but ", err)
+	}
+	if rw.Header().Get(goacors.HeaderAccessControlAllowOrigin) != "*" {
+		t.Error("allow origin should be wild card but ", rw.Header().Get(goacors.HeaderAccessControlAllowOrigin))
+	}
+}
+
 func TestEmptyOriginHeader(t *testing.T) {
 	service := newService(nil)
 	req, _ := http.NewRequest(http.MethodGet, "/", nil)
