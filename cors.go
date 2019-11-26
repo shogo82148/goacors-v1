@@ -11,9 +11,22 @@ import (
 
 // New creates middleware with configure for this
 func New(service *goa.Service, conf *Config) goa.Middleware {
+	// validate allowed origin configure
+	allowAnyOrigin := false
+	allowOrigins := make([]originType, len(conf.AllowOrigins))
+	for i, origin := range conf.AllowOrigins {
+		if origin == "*" {
+			allowAnyOrigin = true
+			break
+		}
+		o, err := parseOrigin(origin)
+		if err != nil {
+			panic("invalid allowed origin: " + origin)
+		}
+		allowOrigins[i] = o
+	}
+
 	skipper := conf.Skipper
-	allowOrigins := make([]string, len(conf.AllowOrigins))
-	copy(allowOrigins, conf.AllowOrigins)
 	allowMethods := strings.Join(conf.AllowMethods, ", ")
 	allowHeaders := strings.Join(conf.AllowHeaders, ", ")
 	exposeHeaders := strings.Join(conf.ExposeHeaders, ", ")
@@ -32,15 +45,24 @@ func New(service *goa.Service, conf *Config) goa.Middleware {
 
 			h := rw.Header()
 
-			// Check allowed origins
-			origin := req.Header.Get(HeaderOrigin)
-			allowedOrigin, _ := findMatchedOrigin(allowOrigins, origin, allowCredentials)
+			// Check the origin of the request is allowed
+			var allowedOrigin string
+			if allowAnyOrigin {
+				allowedOrigin = "*"
+			} else {
+				origin := req.Header.Get(HeaderOrigin)
+				if allowed(origin, allowOrigins, allowCredentials) {
+					allowedOrigin = origin
+				}
+			}
 
 			if req.Method != http.MethodOptions {
 				// handle normal requests
 				h.Add(HeaderVary, HeaderOrigin)
-				h.Set(HeaderAccessControlAllowOrigin, allowedOrigin)
-				if allowCredentials && allowedOrigin != "*" && allowedOrigin != "" {
+				if allowedOrigin != "" {
+					h.Set(HeaderAccessControlAllowOrigin, allowedOrigin)
+				}
+				if allowCredentials {
 					h.Set(HeaderAccessControlAllowCredentials, "true")
 				}
 				if exposeHeaders != "" {
@@ -55,7 +77,7 @@ func New(service *goa.Service, conf *Config) goa.Middleware {
 			h.Add(HeaderVary, HeaderAccessControlRequestHeaders)
 			h.Set(HeaderAccessControlAllowOrigin, allowedOrigin)
 			h.Set(HeaderAccessControlAllowMethods, allowMethods)
-			if allowCredentials && allowedOrigin != "*" && allowedOrigin != "" {
+			if allowCredentials {
 				h.Set(HeaderAccessControlAllowCredentials, "true")
 			}
 			if allowHeaders != "" {
