@@ -18,6 +18,6 @@ or
 ```go
 service.Use(goacors.WithConfig(service, &goacors.GoaCORSConfig{
 	AllowOrigins: []string{"http://example.com"},
-	AllowMethods: []string{goacors.GET},
+	AllowMethods: []string{http.MethodGet},
 }))
 ```
