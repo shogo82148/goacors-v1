@@ -18,8 +18,7 @@ func TestNeitherOriginHeaderAndAllowOriginGiven(t *testing.T) {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
 	testee := goacors.New(service, &goacors.Config{
-		AllowCredentials: true,
-		AllowOrigins:     []string{"*"},
+		AllowOrigins: []string{"*"},
 	})(h)
 	err := testee(ctx, rw, req)
 	if err != nil {
@@ -41,8 +40,7 @@ func TestEmptyOriginHeader(t *testing.T) {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
 	testee := goacors.New(service, &goacors.Config{
-		AllowCredentials: true,
-		AllowOrigins:     []string{"*"},
+		AllowOrigins: []string{"*"},
 	})(h)
 	err := testee(ctx, rw, req)
 	if err != nil {
@@ -129,7 +127,7 @@ func TestOriginAllowsFixedOrigin(t *testing.T) {
 
 func TestPreflightRequest(t *testing.T) {
 	service := newService(nil)
-	fixedOrigin := "localhost"
+	fixedOrigin := "http://localhost"
 	req, _ := http.NewRequest(http.MethodOptions, "/", nil)
 	req.Header.Set(goacors.HeaderOrigin, fixedOrigin)
 	req.Header.Set(goacors.HeaderAccessControlRequestHeaders, "X-OriginalRequest")
@@ -150,7 +148,7 @@ func TestPreflightRequest(t *testing.T) {
 	if err != nil {
 		t.Error("it should not return any error but ", err)
 	}
-	if rw.Header().Get(goacors.HeaderAccessControlAllowOrigin) != "localhost" {
+	if rw.Header().Get(goacors.HeaderAccessControlAllowOrigin) != "http://localhost" {
 		t.Error("allow origin should be empty")
 	}
 	if rw.Header().Get(goacors.HeaderAccessControlAllowMethods) != "GET, HEAD, PUT, PATCH, POST, DELETE" {
@@ -178,7 +176,7 @@ func TestPreflightRequest(t *testing.T) {
 func TestNotGivenAllowHeaderOnRequest(t *testing.T) {
 	service := newService(nil)
 	req, _ := http.NewRequest(http.MethodGet, "/", nil)
-	req.Header.Set(goacors.HeaderOrigin, "localhost")
+	req.Header.Set(goacors.HeaderOrigin, "http://localhost")
 	rw := newTestResponseWriter()
 	ctx := newContext(service, rw, req, nil)
 
@@ -187,11 +185,11 @@ func TestNotGivenAllowHeaderOnRequest(t *testing.T) {
 	}
 	testee := goacors.New(service, &goacors.Config{
 		AllowCredentials: true,
-		AllowOrigins:     []string{"example.com"},
+		AllowOrigins:     []string{"http://example.com"},
 	})(h)
 	err := testee(ctx, rw, req)
 	if err != nil {
-		t.Error("it should not return any error but ", err)
+		t.Fatal("it should not return any error but ", err)
 	}
 	if rw.Header().Get(goacors.HeaderAccessControlAllowOrigin) != "" {
 		t.Error("allow origin should be empty")
@@ -213,22 +211,20 @@ func TestExecuteWithSkipper(t *testing.T) {
 			return true
 		},
 		AllowCredentials: true,
-		AllowOrigins:     []string{"example.com"},
+		AllowOrigins:     []string{"http://example.com"},
 	})(h)
 	err := testee(ctx, rw, req)
 	if err != nil {
-		t.Error("it should not return any error but ", err)
-		t.Fail()
+		t.Fatal("it should not return any error but ", err)
 	}
 	if rw.Header().Get(goacors.HeaderAccessControlAllowOrigin) != "" {
 		t.Error("allow origin should be empty")
-		t.Fail()
 	}
 }
 
 func TestRequestGetWithOrigin(t *testing.T) {
 	service := newService(nil)
-	fixedOrigin := "localhost"
+	fixedOrigin := "http://localhost"
 	req, _ := http.NewRequest(http.MethodGet, "/", nil)
 	req.Header.Set(goacors.HeaderOrigin, fixedOrigin)
 	req.Header.Set(goacors.HeaderContentType, "application/json")
@@ -245,11 +241,9 @@ func TestRequestGetWithOrigin(t *testing.T) {
 	err := testee(ctx, rw, req)
 	if err != nil {
 		t.Error("it should not return any error but ", err)
-		t.Fail()
 	}
-	if rw.Header().Get(goacors.HeaderAccessControlAllowOrigin) != "localhost" {
+	if rw.Header().Get(goacors.HeaderAccessControlAllowOrigin) != "http://localhost" {
 		t.Error("allow origin should be empty")
-		t.Fail()
 	}
 }
 
@@ -270,11 +264,9 @@ func TestAddedAllowOrigHeader(t *testing.T) {
 	err := testee(ctx, rw, req)
 	if err != nil {
 		t.Error("it should not return any error but ", err)
-		t.Fail()
 	}
 	if rw.Header().Get(goacors.HeaderAccessControlAllowHeaders) != "X-OrigHeader" {
 		t.Error("allow origin should be empty")
-		t.Fail()
 	}
 
 	// StatusNoContent does not allow body
