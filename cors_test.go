@@ -54,8 +54,6 @@ func TestEmptyOriginHeader(t *testing.T) {
 }
 
 func TestOriginAllowsWildcard(t *testing.T) {
-	t.Skip(":thinking_face:")
-
 	service := newService(nil)
 	req, _ := http.NewRequest(http.MethodGet, "/", nil)
 	req.Header.Set(goacors.HeaderOrigin, "http://someorigin.com")

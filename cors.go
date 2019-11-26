@@ -48,7 +48,14 @@ func New(service *goa.Service, conf *Config) goa.Middleware {
 			// Check the origin of the request is allowed
 			var allowedOrigin string
 			if allowAnyOrigin {
-				allowedOrigin = "*"
+				if allowCredentials {
+					// https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+					// When responding to a credentialed request, the server must specify an origin in the value of
+					// the Access-Control-Allow-Origin header, instead of specifying the "*" wildcard.
+					allowedOrigin = req.Header.Get(HeaderOrigin)
+				} else {
+					allowedOrigin = "*"
+				}
 			} else {
 				origin := req.Header.Get(HeaderOrigin)
 				if allowed(origin, allowOrigins, allowCredentials) {
