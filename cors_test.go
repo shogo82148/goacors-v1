@@ -18,8 +18,7 @@ func TestNeitherOriginHeaderAndAllowOriginGiven(t *testing.T) {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
 	testee := goacors.New(service, &goacors.Config{
-		AllowCredentials: true,
-		AllowOrigins:     []string{"*"},
+		AllowOrigins: []string{"*"},
 	})(h)
 	err := testee(ctx, rw, req)
 	if err != nil {
@@ -41,8 +40,7 @@ func TestEmptyOriginHeader(t *testing.T) {
 		return service.Send(ctx, http.StatusOK, "ok")
 	}
 	testee := goacors.New(service, &goacors.Config{
-		AllowCredentials: true,
-		AllowOrigins:     []string{"*"},
+		AllowOrigins: []string{"*"},
 	})(h)
 	err := testee(ctx, rw, req)
 	if err != nil {
