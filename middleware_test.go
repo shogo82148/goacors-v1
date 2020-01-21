@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/goadesign/goa"
+	"github.com/shogo82148/goa-v1"
 	"context"
 )
 

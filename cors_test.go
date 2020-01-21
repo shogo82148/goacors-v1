@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/shogo82148/goacors/v2"
+	"github.com/shogo82148/goacors-v1"
 )
 
 func TestNeitherOriginHeaderAndAllowOriginGiven(t *testing.T) {

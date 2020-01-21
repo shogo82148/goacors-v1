@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/goadesign/goa"
+	"github.com/shogo82148/goa-v1"
 )
 
 // New creates middleware with configure for this
