@@ -13,6 +13,8 @@ jobs:
         go:
           - "1.12"
           - "1.13"
+          - "1.14"
+          - "1"
 
     name: Test Go ${{ matrix.go }} in ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
