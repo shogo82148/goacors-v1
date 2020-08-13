@@ -1,5 +1,5 @@
 [![Build Status](https://github.com/shogo82148/goacors-v1/workflows/Test/badge.svg?branch=master)](https://github.com/shogo82148/goacors-v1/actions)
-[![Coverage Status](https://coveralls.io/repos/github/shogo82148/goacors-v1/badge.svg?branch=master&service=github)](https://coveralls.io/github/shogo82148/goacors-v1?branch=master) [![GoDoc](https://godoc.org/github.com/shogo82148/goacors-v1?status.svg)](https://godoc.org/github.com/shogo82148/goacors-v1)
+[![Coverage Status](https://coveralls.io/repos/github/shogo82148/goacors-v1/badge.svg?branch=master&service=github)](https://coveralls.io/github/shogo82148/goacors-v1?branch=master) [![PkgGoDev](https://pkg.go.dev/badge/github.com/shogo82148/goacors-v1?tab=doc)](https://pkg.go.dev/badge/github.com/shogo82148/goacors-v1?tab=doc)
 
 # goacors-v1
 
