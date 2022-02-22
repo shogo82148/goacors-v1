@@ -2,7 +2,7 @@ module github.com/shogo82148/goacors-v1
 
 go 1.17
 
-require github.com/shogo82148/goa-v1 v1.5.11
+require github.com/shogo82148/goa-v1 v1.5.12
 
 require (
 	github.com/armon/go-metrics v0.3.10 // indirect
